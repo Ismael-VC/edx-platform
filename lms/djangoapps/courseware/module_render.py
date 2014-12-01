@@ -644,7 +644,6 @@ def get_module_system_for_user(user, field_data_cache,
             'i18n': ModuleI18nService(),
             'fs': xblock.reference.plugins.FSService(),
             'field-data': field_data,
-            'user': DjangoXBlockUserService(user),
         },
         get_user_role=lambda: get_user_role(user, course_id),
         descriptor_runtime=descriptor.runtime,
@@ -670,6 +669,7 @@ def get_module_system_for_user(user, field_data_cache,
 
     system.set(u'user_is_staff', has_access(user, u'staff', descriptor.location, course_id))
     system.set(u'user_is_admin', has_access(user, u'staff', 'global'))
+    system._services['user'] = DjangoXBlockUserService(user, is_staff=system.user_is_staff)
 
     # make an ErrorDescriptor -- assuming that the descriptor's system is ok
     if has_access(user, u'staff', descriptor.location, course_id):
