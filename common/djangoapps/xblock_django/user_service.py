@@ -4,8 +4,7 @@ Support for converting a django user to an XBlock user
 from django.contrib.auth.models import User
 
 from xblock.reference.user_service import XBlockUser, UserService
-from student.models import get_anonymous_id
-from student.models import get_user_by_username_or_email
+from student.models import anonymous_id_for_user, get_user_by_username_or_email
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 
 ATTR_KEY_IS_AUTHENTICATED = 'edx-platform.is_authenticated'
@@ -20,7 +19,7 @@ class DjangoXBlockUserService(UserService):
     def __init__(self, django_user, **kwargs):
         super(DjangoXBlockUserService, self).__init__(**kwargs)
         self._django_user = django_user
-        self._is_staff = kwargs.get('is_staff', False)
+        self._user_is_staff = kwargs.get('user_is_staff', False)
 
     def get_current_user(self):
         """
@@ -39,7 +38,7 @@ class DjangoXBlockUserService(UserService):
         Returns:
             A unique anonymous_user_id for (user, course) pair.
         """
-        if not self._is_staff:
+        if not self._user_is_staff:
             return None
 
         try:
@@ -48,8 +47,7 @@ class DjangoXBlockUserService(UserService):
             return None
 
         course_id = SlashSeparatedCourseKey.from_deprecated_string(course_id)
-        anonymous_user_id_object = get_anonymous_id(user=user, course_id=course_id)
-        return anonymous_user_id_object.anonymous_user_id if anonymous_user_id_object else None
+        return anonymous_id_for_user(user=user, course_id=course_id, save=False)
 
     def _convert_django_user_to_xblock_user(self, django_user):
         """

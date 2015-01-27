@@ -137,17 +137,6 @@ def anonymous_id_for_user(user, course_id, save=True):
 
     return digest
 
-
-def get_anonymous_id(user, course_id):
-    """
-    Return AnonymousUserId object by user & course_id.
-    """
-    try:
-        return AnonymousUserId.objects.get(user=user, course_id=course_id)
-    except ObjectDoesNotExist:
-        return None
-
-
 def user_by_anonymous_id(uid):
     """
     Return user by anonymous_user_id using AnonymousUserId lookup table.

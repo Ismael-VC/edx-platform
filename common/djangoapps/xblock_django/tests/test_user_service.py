@@ -8,7 +8,6 @@ from xblock_django.user_service import (
     ATTR_KEY_USER_ID,
     ATTR_KEY_USERNAME,
 )
-from xblock_django.user_service import DjangoXBlockUserService
 from student.models import anonymous_id_for_user
 from student.tests.factories import UserFactory, AnonymousUserFactory
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
@@ -63,7 +62,7 @@ class UserServiceTestCase(TestCase):
         """
         Tests for anonymous_user_id method to return None if user is Non-Staff.
         """
-        django_user_service = DjangoXBlockUserService(self.user, is_staff=False)
+        django_user_service = DjangoXBlockUserService(self.user, user_is_staff=False)
 
         anonymous_user_id = django_user_service.get_anonymous_user_id(username=self.user.username, course_id='edx/toy/2012_Fall')
         self.assertIsNone(anonymous_user_id)
@@ -72,7 +71,7 @@ class UserServiceTestCase(TestCase):
         """
         Tests for anonymous_user_id method to return None username does not exist in system.
         """
-        django_user_service = DjangoXBlockUserService(self.user, is_staff=True)
+        django_user_service = DjangoXBlockUserService(self.user, user_is_staff=True)
 
         anonymous_user_id = django_user_service.get_anonymous_user_id(username="No User", course_id='edx/toy/2012_Fall')
         self.assertIsNone(anonymous_user_id)
@@ -87,7 +86,7 @@ class UserServiceTestCase(TestCase):
             save=True
         )
 
-        django_user_service = DjangoXBlockUserService(self.user, is_staff=True)
+        django_user_service = DjangoXBlockUserService(self.user, user_is_staff=True)
         anonymous_user_id = django_user_service.get_anonymous_user_id(
             username=self.user.username,
             course_id='edX/toy/2012_Fall'
