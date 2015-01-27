@@ -646,7 +646,7 @@ def get_module_system_for_user(user, field_data_cache,
             'i18n': ModuleI18nService(),
             'fs': xblock.reference.plugins.FSService(),
             'field-data': field_data,
-            'user': DjangoXBlockUserService(user, user_is_staff=user_is_staff)
+            'user': DjangoXBlockUserService(user, user_is_staff=user_is_staff),
         },
         get_user_role=lambda: get_user_role(user, course_id),
         descriptor_runtime=descriptor.runtime,

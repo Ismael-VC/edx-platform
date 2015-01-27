@@ -1221,9 +1221,9 @@ class LMSXBlockServiceBindingTest(ModuleStoreTestCase):
 
     @XBlock.register_temp_plugin(PureXBlock, identifier='pure')
     @ddt.data("user")
-    def test_expected_user_service_exist_with_staff_info(self, expected_service):
+    def test_expected_user_service_exists_with_staff_info(self, expected_service):
         """
-        Tests that the 'user' service with staff info provided by the LMS runtime.
+        Tests that the LMS runtime contains the 'user' service with appropriate staff info.
         """
         descriptor = ItemFactory(category="pure", parent=self.course)
         runtime, _ = render.get_module_system_for_user(
@@ -1237,4 +1237,4 @@ class LMSXBlockServiceBindingTest(ModuleStoreTestCase):
         )
         service = runtime.service(descriptor, expected_service)
         self.assertIsNotNone(service)
-        self.assertTrue(hasattr(service, '_is_staff'))
+        self.assertTrue(hasattr(service, '_user_is_staff'))

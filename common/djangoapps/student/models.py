@@ -137,6 +137,7 @@ def anonymous_id_for_user(user, course_id, save=True):
 
     return digest
 
+
 def user_by_anonymous_id(uid):
     """
     Return user by anonymous_user_id using AnonymousUserId lookup table.

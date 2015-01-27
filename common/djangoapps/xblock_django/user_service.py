@@ -37,6 +37,7 @@ class DjangoXBlockUserService(UserService):
 
         Returns:
             A unique anonymous_user_id for (user, course) pair.
+            None for Non-staff users.
         """
         if not self._user_is_staff:
             return None
