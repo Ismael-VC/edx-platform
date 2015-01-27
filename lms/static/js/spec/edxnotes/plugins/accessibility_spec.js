@@ -43,7 +43,7 @@ define([
         describe('destroy', function () {
             it('should unbind all events', function () {
                 spyOn($.fn, 'off');
-                spyOn(this.annotator, 'unsubscribe');
+                spyOn(this.annotator, 'unsubscribe').andCallThrough();
                 this.plugin.destroy();
                 expect($.fn.off).toHaveBeenCalledWith('keydown', '.annotator-hl');
                 expect($.fn.off).toHaveBeenCalledWith('keydown', '.annotator-viewer');
